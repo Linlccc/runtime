@@ -207,15 +207,26 @@ export CORE_ROOT=<CoreRoot>
 ```
 
 ## 常用汇总
+### git
+
+```bash
+# 从本地分支创建一个工作树
+git worktree add -f [工作目录] [分支名]
+# 拉取远程分支并创建工作树
+git worktree add -b [本地分支名] [工作目录] origin/[远程分支名]
+
+# 清理仓库
+git clean -xdf
+
+# 从远程仓库 main 分支拉取最新代码合并到当前分支
+git pull upstream main
+```
+
+### 构建
 
 ```bash
 # 清理仓库构建(会清理所有构建产物 artifacts/)
 ./build.sh --clean
-
-# 清理仓库
-git clean -xdf
-# 从远程仓库 main 分支拉取最新代码合并到当前分支
-git pull upstream main
 
 # 测试 aot 编译项目(test:后面可以是tests下的相对路径或者绝对路径)
 ./src/tests/build.sh -nativeaot -test:project.csproj
