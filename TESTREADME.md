@@ -230,7 +230,7 @@ export CORE_ROOT=<CoreRoot>
 ./src/tests/build.sh -generatelayoutonly
 ```
 
-#### 初次构建
+### 初次构建
 ```bash
 # 安装依赖
 ./eng/common/native/install-dependencies.sh
@@ -254,3 +254,8 @@ export CORE_ROOT=<CoreRoot>
 cd <RepoRoot>/artifacts/tests/coreclr/osx.arm64.Debug/nativeaot/SmokeTests/DynamicGenerics/DynamicGenerics/native
 ./DynamicGenerics
 ```
+
+## 待完成
+
+- [ ] 5. 创建自己的测试
+- [ ] 6. 看怎么调试
