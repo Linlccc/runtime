@@ -245,7 +245,7 @@ export CORE_ROOT=<CoreRoot>
 ./src/tests/build.sh -generatelayoutonly
 
 # 测试一个项目
-./src/tests/build.sh -nativeaot -tree:nativeaot
+./src/tests/build.sh -nativeaot -test:<RepoRoot>/src/tests/nativeaot/SmokeTests/DynamicGenerics/DynamicGenerics.csproj
 # 使用运行时运行
 cd <RepoRoot>/artifacts/tests/coreclr/osx.arm64.Debug/nativeaot/SmokeTests/DynamicGenerics/DynamicGenerics
 export CORE_ROOT=<CoreRoot>
