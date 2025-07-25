@@ -202,7 +202,8 @@ export CORE_ROOT=<CoreRoot>
 
 ### 找不到 libjitinterface_arm64
 ```bash
-# 重新构建 clr
+# 重新构建 clr(这里不知道为什么，使用 release 后再使用 debug 就可以了)
+./build.sh -s clr -c Release
 ./build.sh -s clr -c Debug
 ```
 
@@ -252,17 +253,20 @@ export CORE_ROOT=<CoreRoot>
 
 # 构建本地运行环境
 # 构建过后在 <RepoRoot>/artifacts/tests/coreclr/osx.arm64.Debug/Tests/Core_Root
-./build.sh -s clr+libs -rc Debug -lc Release
+# ./build.sh -s clr+libs -rc Debug -lc Release
+./build.sh -s clr+libs -c Release
+./build.sh -s clr -c Debug
 ./src/tests/build.sh -generatelayoutonly
 
 # 测试一个项目
-./src/tests/build.sh -nativeaot -test:<RepoRoot>/src/tests/nativeaot/SmokeTests/DynamicGenerics/DynamicGenerics.csproj
+./src/tests/build.sh -nativeaot -test:nativeaot/SmokeTests/DynamicGenerics/DynamicGenerics.csproj
 # 使用运行时运行
-cd <RepoRoot>/artifacts/tests/coreclr/osx.arm64.Debug/nativeaot/SmokeTests/DynamicGenerics/DynamicGenerics
-export CORE_ROOT=<CoreRoot>
+cd artifacts/tests/coreclr/osx.arm64.Debug/nativeaot/SmokeTests/DynamicGenerics/DynamicGenerics
+export CORE_ROOT=/Users/lin/Files/Git/GitHub/runtime_lindev/artifacts/tests/coreclr/osx.arm64.Debug/Tests/Core_Root
 ./DynamicGenerics.sh
-# 运行 aot 编译的项目(是一个可运行程序，可以直接双击运行)
-cd <RepoRoot>/artifacts/tests/coreclr/osx.arm64.Debug/nativeaot/SmokeTests/DynamicGenerics/DynamicGenerics/native
+# 运行 aot 编译的项目
+# 直接双击运行即可，如果要在终端中运行，可以使用以下命令：
+cd artifacts/tests/coreclr/osx.arm64.Debug/nativeaot/SmokeTests/DynamicGenerics/DynamicGenerics/native
 ./DynamicGenerics
 ```
 
