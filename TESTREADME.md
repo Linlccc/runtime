@@ -200,7 +200,11 @@ export CORE_ROOT=<CoreRoot>
 
 ## 问题及处理
 
-
+### 找不到 libjitinterface_arm64
+```bash
+# 重新构建 clr
+./build.sh -s clr -c Debug
+```
 
 ## 常用汇总
 
@@ -224,4 +228,29 @@ export CORE_ROOT=<CoreRoot>
 # 如果修改了 libs/clr 中的 System.Private.CoreLib 后最小需要构建以下项目后重新测试
 ./build.sh -s Clr.NativeCoreLib
 ./src/tests/build.sh -generatelayoutonly
+```
+
+#### 初次构建
+```bash
+# 安装依赖
+./eng/common/native/install-dependencies.sh
+# 全量构建（初次构建时推荐，也可根据需求构建）
+./build.sh
+# 运行所有测试（可选）
+./build.sh -test
+
+# 构建本地运行环境
+# 构建过后在 <RepoRoot>/artifacts/tests/coreclr/osx.arm64.Debug/Tests/Core_Root
+./build.sh -s clr+libs -rc Debug -lc Release
+./src/tests/build.sh -generatelayoutonly
+
+# 测试一个项目
+./src/tests/build.sh -nativeaot -tree:nativeaot
+# 使用运行时运行
+cd <RepoRoot>/artifacts/tests/coreclr/osx.arm64.Debug/nativeaot/SmokeTests/DynamicGenerics/DynamicGenerics
+export CORE_ROOT=<CoreRoot>
+./DynamicGenerics.sh
+# 运行 aot 编译的项目(是一个可运行程序，可以直接双击运行)
+cd <RepoRoot>/artifacts/tests/coreclr/osx.arm64.Debug/nativeaot/SmokeTests/DynamicGenerics/DynamicGenerics/native
+./DynamicGenerics
 ```
