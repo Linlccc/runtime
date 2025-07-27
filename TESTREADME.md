@@ -133,6 +133,7 @@ see:[创建测试项目](https://github.com/dotnet/runtime/blob/main/docs/workfl
 ## 执行生成的测试 dll
 | 在自己构建的 runtime 中要执行生成的 dll 需要使用 corerun
 | corerun 在不同系统中表现形式不同，osx 和 linux 下是一个可执行文件，而在 windows 下是一个 .exe 文件
+| see: [使用 Corerun 运行 .NET 应用程序](https://github.com/dotnet/runtime/blob/main/docs/workflow/testing/using-corerun-and-coreroot.md)
 
 ### 使用 corerun
 ```bash
