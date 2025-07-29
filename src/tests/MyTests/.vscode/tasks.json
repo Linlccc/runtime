@@ -1,0 +1,45 @@
+{
+    "version": "2.0.0",
+    "inputs": [
+        {
+            "id": "selectProject",
+            "description": "选择项目",
+            "type": "pickString",
+            "options": [
+                "/Template/AotTest/AotTest.csproj",
+                "/Template/Test1/Test1.csproj",
+                "/AotTest/AotTest.csproj"
+            ]
+        },
+        {
+            "id": "isAot",
+            "description": "是否为 AOT 模式",
+            "type": "pickString",
+            "options": ["-nativeaot", ""],
+            "default": ""
+        }
+    ],
+    "tasks": [
+        // 使用 runtime 测试脚本构建(支持 aot)
+        {
+            "label": "Test Build(Slow)",
+            "type": "shell",
+            "command": "${workspaceFolder}/../build.sh",
+            "args": [
+                "${input:isAot}",
+                "-test:${workspaceFolderBasename}${input:selectProject}"
+            ],
+            "problemMatcher": ["$msCompile"]
+        },
+        // 直接使用 dotnet 构建(不支持 aot，debug 时推荐)
+        {
+            "label": "Dotnet Build(Fast)",
+            "type": "process",
+            "command": "dotnet",
+            "args": ["build", "${workspaceFolder}${input:selectProject}"],
+            "problemMatcher": ["$msCompile"]
+        }
+        // 重新构建 clr
+        // 重新构建 clr.aot
+    ]
+}

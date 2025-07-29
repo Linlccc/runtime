@@ -1,0 +1,35 @@
+{
+    // 使用 IntelliSense 了解相关属性。
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "inputs": [
+        {
+            "id": "DebugDll",
+            "type": "pickString",
+            "description": "选择要调试的 DLL",
+            "options": [
+                "Template/AotTest/AotTest/AotTest.dll",
+                "Template/Test1/Test1/Test1.dll",
+                "AotTest/AotTest/AotTest.dll"
+            ],
+            "default": ""
+        }
+    ],
+    "configurations": [
+        {
+            "name": "Debug",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/../../../artifacts/tests/coreclr/osx.arm64.Debug/Tests/Core_Root/corerun",
+            "args": [
+                "${workspaceFolder}/../../../artifacts/tests/coreclr/osx.arm64.Debug/MyTests/${input:DebugDll}"
+            ],
+            "cwd": "${workspaceFolder}/../../../artifacts/tests/coreclr/osx.arm64.Debug/MyTests",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "justMyCode": false,
+            "enableStepFiltering": false
+        }
+    ]
+}
