@@ -7,8 +7,7 @@
             "type": "pickString",
             "options": [
                 "/Template/AotTest/AotTest.csproj",
-                "/Template/Test1/Test1.csproj",
-                "/AotTest/AotTest.csproj"
+                "/Template/Test1/Test1.csproj"
             ]
         },
         {
@@ -38,8 +37,33 @@
             "command": "dotnet",
             "args": ["build", "${workspaceFolder}${input:selectProject}"],
             "problemMatcher": ["$msCompile"]
+        },
+
+        // 构建 Clr.NativeCoreLib，clr 中的 System.Private.CoreLib 修改后需要执行
+        {
+            "label": "Build Clr.NativeCoreLib",
+            "type": "shell",
+            "command": "${workspaceFolder}/../../../build.sh",
+            "args": ["-s", "Clr.NativeCoreLib"],
+            "problemMatcher": ["$msCompile"]
+        },
+        // 构建 CoreRoot，clr 中的 System.Private.CoreLib 修改后需要执行
+        {
+            "label": "Build CoreRoot",
+            "type": "shell",
+            "command": "${workspaceFolder}/../build.sh",
+            "args": ["-generatelayoutonly"],
+            "problemMatcher": ["$msCompile"],
+            "dependsOn": ["Build Clr.NativeCoreLib"],
+            "dependsOrder": "sequence"
+        },
+        // 构建 Clr.NativeAotLibs，在 clr 中的 nativeaot 修改后才需要执行
+        {
+            "label": "Build Clr.NativeAotLibs",
+            "type": "shell",
+            "command": "${workspaceFolder}/../../../build.sh",
+            "args": ["-s", "Clr.NativeAotLibs"],
+            "problemMatcher": ["$msCompile"]
         }
-        // 重新构建 clr
-        // 重新构建 clr.aot
     ]
 }
