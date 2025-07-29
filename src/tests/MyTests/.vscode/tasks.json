@@ -7,7 +7,8 @@
             "type": "pickString",
             "options": [
                 "/Template/AotTest/AotTest.csproj",
-                "/Template/Test1/Test1.csproj"
+                "/Template/Test1/Test1.csproj",
+                "/DynamicGenericMethod/DynamicGenericMethod.csproj"
             ]
         },
         {
@@ -15,7 +16,7 @@
             "description": "是否为 AOT 模式",
             "type": "pickString",
             "options": ["-nativeaot", ""],
-            "default": ""
+            "default": "-nativeaot"
         }
     ],
     "tasks": [

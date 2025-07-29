@@ -10,7 +10,8 @@
             "description": "选择要调试的 DLL",
             "options": [
                 "Template/AotTest/AotTest/AotTest.dll",
-                "Template/Test1/Test1/Test1.dll"
+                "Template/Test1/Test1/Test1.dll",
+                "DynamicGenericMethod/DynamicGenericMethod/DynamicGenericMethod.dll"
             ],
             "default": ""
         }

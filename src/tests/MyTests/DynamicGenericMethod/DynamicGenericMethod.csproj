@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <!-- 生成可执行文件 -->
+        <OutputType>Exe</OutputType>
+        <!-- 自己提供程序入口函数 -->
+        <ReferenceXUnitWrapperGenerator>false</ReferenceXUnitWrapperGenerator>
+        <!-- 启动项目中隐式包含编译项、嵌入的资源项和 None 项(runtime 中禁用了，我们需要手动打开) -->
+        <EnableDefaultItems>true</EnableDefaultItems>
+
+        <!-- aot 时禁用修剪分析警告 -->
+        <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
+        <NoWarn>$(NoWarn);IL3050</NoWarn>
+
+        <!-- aot 时使用以下配置禁用多平台测试 -->
+        <CLRTestTargetUnsupported Condition="'$(IlcMultiModule)' == 'true'">true</CLRTestTargetUnsupported>
+
+        <!-- 需要进程隔离 -->
+        <RequiresProcessIsolation>true</RequiresProcessIsolation>
+    </PropertyGroup>
+
+</Project>
