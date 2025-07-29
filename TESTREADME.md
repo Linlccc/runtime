@@ -271,7 +271,104 @@ cd artifacts/tests/coreclr/osx.arm64.Debug/nativeaot/SmokeTests/DynamicGenerics/
 ./DynamicGenerics
 ```
 
-## 待完成
+### 创建自己的调试项目
+| 直接从 `src/tests/MyTests` 的 `Template` 复制一个测试项目到 `MyTests` 目录下，或者按一下步骤创建
 
-- [ ] 5. 创建自己的测试
-- [ ] 6. 看怎么调试
+1. 在 `src/tests` 目录下创建一个新的测试项目目录
+2. 在目录中创建 C# 项目
+3. 根据需求添加在 csproj 中添加以下配置
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <!-- 生成可执行文件 -->
+        <OutputType>Exe</OutputType>
+        <!-- 自己提供程序入口函数 -->
+        <ReferenceXUnitWrapperGenerator>false</ReferenceXUnitWrapperGenerator>
+        <!-- 启动项目中隐式包含编译项、嵌入的资源项和 None 项(runtime 中禁用了，我们需要手动打开) -->
+        <EnableDefaultItems>true</EnableDefaultItems>
+
+        <!-- 测试优先级(值越大优先级越低，0 最高) -->
+        <CLRTestPriority>0</CLRTestPriority>
+
+        <!-- aot 时禁用修剪分析警告 -->
+        <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
+        <NoWarn>$(NoWarn);IL3050</NoWarn>
+
+        <!-- aot 时使用以下配置禁用多平台测试 -->
+        <CLRTestTargetUnsupported Condition="'$(IlcMultiModule)' == 'true'">true</CLRTestTargetUnsupported>
+
+        <!-- 需要进程隔离 -->
+        <RequiresProcessIsolation>true</RequiresProcessIsolation>
+    </PropertyGroup>
+
+    <!-- 如果不配置 EnableDefaultItems 也可以通过以下方法添加编译项 -->
+    <ItemGroup>
+        <Compile Include="*.cs" />
+    </ItemGroup>
+</Project>
+```
+4. 编写代码
+```csharp
+// 不自己提供入口函数时在要测试的方法上添加 [Fact] 和 [Theory] 特性
+
+// 如果自己提供入口函数添加以下代码
+static public int Main(string[] notUsed)
+{
+    try
+    {
+        // Test scenario here
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine($"Test Failure: {e}");
+        return 101;
+    }
+
+    return 100;
+}
+```
+5. 构建并执行
+```bash
+# 构建项目(项目)
+cd <RepoRoot>
+./src/tests/build.sh -test:project.csproj
+
+# 执行项目
+cd <RepoRoot>/artifacts/tests/coreclr/<OS>.<Arch>.<Configuration>/<projectDir>..
+# 1. 通过 <projectName>.sh 脚本执行
+./<projectName>.sh -coreroot <CoreRoot>
+# 2. 通过 corerun 执行
+<Core_Root>/corerun <projectName>.dll
+
+
+
+# 构建 aot 项目
+./src/tests/build.sh -nativeaot -test:project.csproj
+# 进入 <RepoRoot>/artifacts/tests/coreclr/<OS>.<Arch>.<Configuration>/<projectDir>../native ,双击执行可执行文件
+```
+6. vscode 中调试项目
+```json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "<Core_Root>/corerun",
+            "args": [ "<RepoRoot>/artifacts/tests/coreclr/<OS>.<Arch>.<Configuration>/.../<projectName>.dll" ],
+            "cwd": "<RepoRoot>/artifacts/tests/coreclr/<OS>.<Arch>.<Configuration>/.../",
+            "stopAtEntry": true,
+            "console": "internalConsole",
+            "justMyCode": false,
+            "enableStepFiltering": false
+        }
+    ]
+}
+```
+7. 在 Rider 中调试项目
+   1. `运行` -> `编辑配置`
+   2. 配置窗口中点击 `+` -> `.NET 项目`
+   3. 可执行文件路径: `<RepoRoot>/corerun`
+   4. 程序实参: `<RepoRoot>/artifacts/tests/coreclr/<OS>.<Arch>.<Configuration>/.../<projectName>.dll`
+   5. 工作目录: `<RepoRoot>/artifacts/tests/coreclr/<OS>>.<Arch>.<Configuration>/.../`
