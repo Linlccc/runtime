@@ -20,9 +20,17 @@
         }
     ],
     "tasks": [
+        // 直接使用 dotnet 构建(不支持 aot，debug 时推荐)
+        {
+            "label": "构建项目(快)",
+            "type": "process",
+            "command": "dotnet",
+            "args": ["build", "${workspaceFolder}${input:selectProject}"],
+            "problemMatcher": ["$msCompile"]
+        },
         // 使用 runtime 测试脚本构建(支持 aot)
         {
-            "label": "Test Build(Slow)",
+            "label": "构建项目(慢)",
             "type": "shell",
             "command": "${workspaceFolder}/../build.sh",
             "args": [
@@ -31,13 +39,18 @@
             ],
             "problemMatcher": ["$msCompile"]
         },
-        // 直接使用 dotnet 构建(不支持 aot，debug 时推荐)
+        // 先构建 Clr.NativeAotLibs，再使用 aot 构建项目，在 clr 中的 nativeaot 修改后测试时才需要执行
         {
-            "label": "Dotnet Build(Fast)",
-            "type": "process",
-            "command": "dotnet",
-            "args": ["build", "${workspaceFolder}${input:selectProject}"],
-            "problemMatcher": ["$msCompile"]
+            "label": "构架 clr.aot && Aot 构建项目(慢)",
+            "type": "shell",
+            "command": "${workspaceFolder}/../build.sh",
+            "args": [
+                "-nativeaot",
+                "-test:${workspaceFolderBasename}${input:selectProject}"
+            ],
+            "problemMatcher": ["$msCompile"],
+            "dependsOn": ["Build Clr.NativeAotLibs"],
+            "dependsOrder": "sequence"
         },
 
         // 构建 Clr.NativeCoreLib，clr 中的 System.Private.CoreLib 修改后需要执行
