@@ -368,3 +368,6 @@ test:.cs
 *.tempLog.xml
 *.testResults.xml
 *.testStats.csv
+
+# 排除测试任务和调试配置
+!src/tests/MyTests/.vscode
