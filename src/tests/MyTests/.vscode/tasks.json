@@ -8,7 +8,7 @@
             "options": [
                 "/Template/AotTest/AotTest.csproj",
                 "/Template/Test1/Test1.csproj",
-                "/DynamicGenericMethod/DynamicGenericMethod.csproj"
+                "/Aot_MakeGenericMethod/Aot_MakeGenericMethod.csproj"
             ]
         },
         {

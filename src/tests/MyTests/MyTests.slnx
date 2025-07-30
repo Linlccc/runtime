@@ -4,5 +4,5 @@
     <Project Path="Template/Test1/Test1.csproj" />
   </Folder>
   <Project Path="../Common/XUnitWrapperGenerator/XUnitWrapperGenerator.csproj" />
-  <Project Path="DynamicGenericMethod/DynamicGenericMethod.csproj" />
+  <Project Path="Aot_MakeGenericMethod/Aot_MakeGenericMethod.csproj" />
 </Solution>

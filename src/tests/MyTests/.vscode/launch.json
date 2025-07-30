@@ -11,7 +11,7 @@
             "options": [
                 "Template/AotTest/AotTest/AotTest.dll",
                 "Template/Test1/Test1/Test1.dll",
-                "DynamicGenericMethod/DynamicGenericMethod/DynamicGenericMethod.dll"
+                "Aot_MakeGenericMethod/Aot_MakeGenericMethod/Aot_MakeGenericMethod.dll"
             ],
             "default": ""
         }
